@@ -23,6 +23,8 @@ filterOptions.forEach(option => {
     option.addEventListener("click", () => {
         document.querySelector(".filter .active").classList.remove("active");
         option.classList.add("active");
+        filterName.innerText = option.innerText;
+
     });
 });
 
