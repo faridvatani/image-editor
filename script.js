@@ -27,13 +27,41 @@ filterOptions.forEach(option => {
         option.classList.add("active");
         filterName.innerText = option.innerText;
 
+        if(option.id === "brightness") {
+            filterSlider.max = "200";
+            filterSlider.value = brightness;
+            filterValue.innerText = `${brightness}%`;
+        } else if(option.id === "saturation") {
+            filterSlider.max = "200";
+            filterSlider.value = saturation;
+            filterValue.innerText = `${saturation}%`
+        } else if(option.id === "inversion") {
+            filterSlider.max = "100";
+            filterSlider.value = inversion;
+            filterValue.innerText = `${inversion}%`;
+        } else {
+            filterSlider.max = "100";
+            filterSlider.value = grayscale;
+            filterValue.innerText = `${grayscale}%`;
+        }
     });
 });
 
 const updateFilter = () => {
     filterValue.innerText = `${filterSlider.value}%`;
     const selectedFilter = document.querySelector(".filter .active");
+
+    if(selectedFilter.id === "brightness") {
+        brightness = filterSlider.value;
+    } else if(selectedFilter.id === "saturation") {
+        saturation = filterSlider.value;
+    } else if(selectedFilter.id === "inversion") {
+        inversion = filterSlider.value;
+    } else {
+        grayscale = filterSlider.value;
+    }
 }
+
 
 filterSlider.addEventListener("input", updateFilter);
 fileInput.addEventListener("change", loadImage);
