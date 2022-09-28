@@ -3,7 +3,9 @@ const fileInput = document.querySelector(".file-input"),
 chooseImgBtn = document.querySelector(".choose-img"),
 previewImg = document.querySelector(".preview-img img"),
 filterOptions = document.querySelectorAll(".filter button"),
-filterName = document.querySelector(".filter-info .name");
+filterName = document.querySelector(".filter-info .name"),
+filterSlider = document.querySelector(".slider input"),
+filterValue = document.querySelector(".filter-info .value");
 
 let brightness = "100", saturation = "100", inversion = "0", grayscale = "0";
 let rotate = 0, flipHorizontal = 1, flipVertical = 1;
@@ -28,6 +30,12 @@ filterOptions.forEach(option => {
     });
 });
 
+const updateFilter = () => {
+    filterValue.innerText = `${filterSlider.value}%`;
+    const selectedFilter = document.querySelector(".filter .active");
+}
+
+filterSlider.addEventListener("input", updateFilter);
 fileInput.addEventListener("change", loadImage);
 chooseImgBtn.addEventListener("click", () => fileInput.click());
 
