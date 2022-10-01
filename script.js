@@ -7,7 +7,8 @@ filterName = document.querySelector(".filter-info .name"),
 filterSlider = document.querySelector(".slider input"),
 filterValue = document.querySelector(".filter-info .value"),
 rotateOptions = document.querySelectorAll(".rotate button"),
-resetFilterBtn = document.querySelector(".reset-filter");
+resetFilterBtn = document.querySelector(".reset-filter"),
+saveImgBtn = document.querySelector(".save-img");
 
 let brightness = "100",
     saturation = "100",
@@ -97,6 +98,19 @@ const resetFilter = () => {
     applyFilter();
 }
 
+const saveImage = () => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = previewImg.naturalWidth;
+    canvas.height = previewImg.naturalHeight;
+    
+    ctx.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%)`;
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.drawImage(previewImg, 0, 0, canvas.width, canvas.height);
+    document.body.append(canvas);
+}
+
+saveImgBtn.addEventListener("click", saveImage);
 resetFilterBtn.addEventListener("click", resetFilter);
 filterSlider.addEventListener("input", updateFilter);
 fileInput.addEventListener("change", loadImage);
