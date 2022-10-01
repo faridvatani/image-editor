@@ -106,7 +106,12 @@ const saveImage = () => {
     
     ctx.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%)`;
     ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.drawImage(previewImg, 0, 0, canvas.width, canvas.height);
+    if(rotate !== 0) {
+        ctx.rotate(rotate * Math.PI / 180);
+    }
+    ctx.scale(flipHorizontal, flipVertical);
+    ctx.drawImage(previewImg, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+    
     document.body.append(canvas);
 }
 
