@@ -113,6 +113,10 @@ const saveImage = () => {
     ctx.scale(flipHorizontal, flipVertical);
     ctx.drawImage(previewImg, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
     
+    downloadImage(canvas);
+}
+
+const downloadImage = (canvas) => {
     const link = document.createElement("a");
     link.download = "image.jpg";
     link.href = canvas.toDataURL();
