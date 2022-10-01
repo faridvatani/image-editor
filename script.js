@@ -14,6 +14,7 @@ let brightness = "100",
     saturation = "100",
     inversion = "0",
     grayscale = "0",
+    blurry = "0",
     rotate = 0,
     flipHorizontal = 1,
     flipVertical = 1;
@@ -48,10 +49,14 @@ filterOptions.forEach(option => {
             filterSlider.max = "100";
             filterSlider.value = inversion;
             filterValue.innerText = `${inversion}%`;
-        } else {
+        } else if(option.id === "grayscale") {
             filterSlider.max = "100";
             filterSlider.value = grayscale;
             filterValue.innerText = `${grayscale}%`;
+        } else {
+            filterSlider.max = "50";
+            filterSlider.value = blurry;
+            filterValue.innerText = `${blurry}%`;
         }
     });
 });
@@ -66,14 +71,16 @@ const updateFilter = () => {
         saturation = filterSlider.value;
     } else if(selectedFilter.id === "inversion") {
         inversion = filterSlider.value;
-    } else {
+    } else if(selectedFilter.id === "grayscale") {
         grayscale = filterSlider.value;
+    } else {
+        blurry = filterSlider.value;
     }
     applyFilter();
 }
 
 const applyFilter = () => {
-    previewImg.style.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%)`;
+    previewImg.style.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%) blur(${blurry}px)`;
     previewImg.style.transform = `rotate(${rotate}deg) scale(${flipHorizontal}, ${flipVertical})`;
 }
 
@@ -93,7 +100,8 @@ rotateOptions.forEach(option => {
 });
 
 const resetFilter = () => {
-    brightness = "100"; saturation = "100"; inversion = "0"; grayscale = "0";
+    brightness = "100"; saturation = "100"; inversion = "0"; 
+    grayscale = "0"; blurry = "0";
     rotate = 0; flipHorizontal = 1; flipVertical = 1;
     filterOptions[0].click();
     applyFilter();
@@ -105,7 +113,7 @@ const saveImage = () => {
     canvas.width = previewImg.naturalWidth;
     canvas.height = previewImg.naturalHeight;
     
-    ctx.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%)`;
+    ctx.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%) blur(${blurry}px)`;
     ctx.translate(canvas.width / 2, canvas.height / 2);
     if(rotate !== 0) {
         ctx.rotate(rotate * Math.PI / 180);
