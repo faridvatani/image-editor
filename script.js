@@ -15,6 +15,7 @@ let brightness = "100",
     inversion = "0",
     grayscale = "0",
     blurry = "0",
+    sepia = "0",
     rotate = 0,
     flipHorizontal = 1,
     flipVertical = 1;
@@ -53,10 +54,14 @@ filterOptions.forEach(option => {
             filterSlider.max = "100";
             filterSlider.value = grayscale;
             filterValue.innerText = `${grayscale}%`;
-        } else {
+        } else if(option.id === "blur") {
             filterSlider.max = "50";
             filterSlider.value = blurry;
             filterValue.innerText = `${blurry}%`;
+        } else if(option.id === "sepia") {
+            filterSlider.max = "100";
+            filterSlider.value = sepia;
+            filterValue.innerText = `${sepia}%`;
         }
     });
 });
@@ -73,14 +78,16 @@ const updateFilter = () => {
         inversion = filterSlider.value;
     } else if(selectedFilter.id === "grayscale") {
         grayscale = filterSlider.value;
-    } else {
+    } else if(selectedFilter.id === "blur") {
         blurry = filterSlider.value;
+    } else if(selectedFilter.id === "sepia") {
+        sepia = filterSlider.value;
     }
     applyFilter();
 }
 
 const applyFilter = () => {
-    previewImg.style.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%) blur(${blurry}px)`;
+    previewImg.style.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%) blur(${blurry}px) sepia(${sepia}%)`;
     previewImg.style.transform = `rotate(${rotate}deg) scale(${flipHorizontal}, ${flipVertical})`;
 }
 
@@ -101,7 +108,7 @@ rotateOptions.forEach(option => {
 
 const resetFilter = () => {
     brightness = "100"; saturation = "100"; inversion = "0"; 
-    grayscale = "0"; blurry = "0";
+    grayscale = "0"; blurry = "0"; sepia = "0";
     rotate = 0; flipHorizontal = 1; flipVertical = 1;
     filterOptions[0].click();
     applyFilter();
@@ -113,7 +120,7 @@ const saveImage = () => {
     canvas.width = previewImg.naturalWidth;
     canvas.height = previewImg.naturalHeight;
     
-    ctx.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%) blur(${blurry}px)`;
+    ctx.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%) blur(${blurry}px) sepia(${sepia}%)`;
     ctx.translate(canvas.width / 2, canvas.height / 2);
     if(rotate !== 0) {
         ctx.rotate(rotate * Math.PI / 180);
