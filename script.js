@@ -1,4 +1,3 @@
-// 20: 53 min
 const fileInput = document.querySelector(".file-input"),
 chooseImgBtn = document.querySelector(".choose-img"),
 previewImg = document.querySelector(".preview-img img"),
@@ -25,7 +24,6 @@ let brightness = "100",
 const loadImage = () => {
     let file = fileInput.files[0];
     if(!file) return;
-    // console.log(fileInput);
 
     previewImg.src = URL.createObjectURL(file);
     previewImg.addEventListener("load", () => {
