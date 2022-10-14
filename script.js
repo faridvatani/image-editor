@@ -22,18 +22,18 @@ let brightness = "100",
     flipVertical = 1;
 
 const loadImage = () => {
-    let file = fileInput.files[0];
-    if(!file) return;
+    let file = fileInput.files[0]; // getting user selected file
+    if(!file) return; // return if user hasn't selected file
 
-    previewImg.src = URL.createObjectURL(file);
+    previewImg.src = URL.createObjectURL(file); // passing file url as preview img src
     previewImg.addEventListener("load", () => {
-        resetFilterBtn.click();
+        resetFilterBtn.click(); // clicking reset btn, so the filter calue reset if the user selected new img
         document.querySelector(".container").classList.remove("disable");
     });
 }
 
 filterOptions.forEach(option => {
-    option.addEventListener("click", () => {
+    option.addEventListener("click", () => { // adding click event listener to all filter buttons
         document.querySelector(".active").classList.remove("active");
         option.classList.add("active");
         filterName.innerText = option.innerText;
@@ -76,7 +76,7 @@ filterOptions.forEach(option => {
 
 const updateFilter = () => {
     filterValue.innerText = `${filterSlider.value}%`;
-    const selectedFilter = document.querySelector(".filter .active");
+    const selectedFilter = document.querySelector(".filter .active"); // getting selected filter button
 
     if(selectedFilter.id === "brightness") {
         brightness = filterSlider.value;
@@ -106,14 +106,16 @@ const applyFilter = () => {
 }
 
 rotateOptions.forEach(option => {
-    option.addEventListener("click", () => {
+    option.addEventListener("click", () => { // adding click event listener to all rotate/flip buttons
         if(option.id === "left") {
-            rotate -= 90;
+            rotate -= 90; // if clicked btn is left rotate, decrement rotate value by -90
         } else if(option.id === "right") {
-            rotate += 90;
+            rotate += 90; // if clicked btn is right rotate, decrement rotate value by +90
         } else if(option.id === "horizontal") {
+            // if flipHorizontal value is 1, set this value to -1 else set 1
             flipHorizontal = flipHorizontal === 1 ? -1 : 1;
         } else {
+            // if flipVertical value is 1, set this value to -1 else set 1
             flipVertical = flipVertical === 1 ? -1 : 1;
         }
         applyFilter();
@@ -121,37 +123,39 @@ rotateOptions.forEach(option => {
 });
 
 const resetFilter = () => {
+    // resetting all variable value to its default value
     brightness = "100"; saturation = "100"; inversion = "0"; 
     grayscale = "0"; blurry = "0"; sepia = "0"; transparent = "100"; 
     coloration = "0";
     rotate = 0; flipHorizontal = 1; flipVertical = 1;
-    filterOptions[0].click();
+    filterOptions[0].click(); // clicking brightness btn, so the brightness selected by default
     applyFilter();
 }
 
 const saveImage = () => {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = previewImg.naturalWidth;
-    canvas.height = previewImg.naturalHeight;
+    const canvas = document.createElement("canvas"); // creating canvas element
+    const ctx = canvas.getContext("2d"); // canvas.getcontext return a drawing context on the canvas
+    canvas.width = previewImg.naturalWidth; // setting canvas width to actual image width
+    canvas.height = previewImg.naturalHeight; // setting canvas height to actual image height
     
+    // applying user selected filters to canvas filter
     ctx.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) 
     grayscale(${grayscale}%) blur(${blurry}px) sepia(${sepia}%) opacity(${transparent}%) hue-rotate(${coloration}deg)`;
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    if(rotate !== 0) {
+    ctx.translate(canvas.width / 2, canvas.height / 2); // translating canvas from center
+    if(rotate !== 0) { // if rotate value isn't 0, rotate the canvas
         ctx.rotate(rotate * Math.PI / 180);
     }
-    ctx.scale(flipHorizontal, flipVertical);
+    ctx.scale(flipHorizontal, flipVertical); // flip canvas, horizontally / vertically
     ctx.drawImage(previewImg, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
     
     downloadImage(canvas);
 }
 
 const downloadImage = (canvas) => {
-    const link = document.createElement("a");
-    link.download = "image.jpg";
-    link.href = canvas.toDataURL();
-    link.click();
+    const link = document.createElement("a"); // creating <a> element
+    link.download = "image.jpg"; // passing <a> tag download value to "image.png"
+    link.href = canvas.toDataURL(); // passing <a> tag href value to canvas data url
+    link.click(); // clicking <a> tag so the image download
 }
 
 saveImgBtn.addEventListener("click", saveImage);
